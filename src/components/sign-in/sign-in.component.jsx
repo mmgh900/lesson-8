@@ -2,9 +2,11 @@ import React from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
-import {signInWithGoogle} from "../../firebase/firebase.utils";
+import {auth, signInWithGoogle} from "../../firebase/firebase.utils";
 import './sign-in.styles.scss';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faGoogle} from "@fortawesome/free-brands-svg-icons";
+
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -16,8 +18,17 @@ class SignIn extends React.Component {
     };
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+
+    const {email, password} = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({email: '', password: ''})
+    } catch (e) {
+      console.error(e)
+    }
 
     this.setState({ email: '', password: '' });
   };
@@ -51,10 +62,10 @@ class SignIn extends React.Component {
             label='password'
             required
           />
-          <CustomButton type='submit'> Sign in </CustomButton>
+          <CustomButton type='submit' style={{marginRight: "30px"}}> Sign in </CustomButton>
           <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+            <FontAwesomeIcon className='button__icon' icon={faGoogle} />
             Sign in with Google
-            <FontAwesomeIcon icon={["fal", "coffee"]} />
           </CustomButton>
         </form>
       </div>
