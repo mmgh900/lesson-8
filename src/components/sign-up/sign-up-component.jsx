@@ -8,8 +8,9 @@ import {auth, createUserProfileDocument} from '../../firebase/firebase.utils';
 import './sign-up.styles.scss';
 
 class SignUp extends React.Component {
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
 
         this.state = {
             displayName: '',
@@ -53,7 +54,6 @@ class SignUp extends React.Component {
 
         this.setState({[name]: value});
     };
-
 
     render() {
         const {displayName, email, password, confirmPassword} = this.state;
